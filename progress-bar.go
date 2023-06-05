@@ -63,12 +63,16 @@ func New(options ...Option) *ProgressBar {
 	}
 
 	progressBar.title = &format{
-		align: AlignCenter,
-		pb:    progressBar,
+		Format: &Format{
+			align: alignCenter,
+		},
+		pb: progressBar,
 	}
 	progressBar.comment = &format{
-		align: AlignLeft,
-		pb:    progressBar,
+		Format: &Format{
+			align: alignLeft,
+		},
+		pb: progressBar,
 	}
 
 	progressBar.Reconfigure(options...)
@@ -77,19 +81,15 @@ func New(options ...Option) *ProgressBar {
 }
 
 // Title sets the title
-func (pb *ProgressBar) Title(text string, align ...Align) {
+func (pb *ProgressBar) Title(text string) *Format {
 	pb.title.text = text
-	if len(align) > 0 {
-		pb.title.align = align[0]
-	}
+	return pb.title.Format
 }
 
 // Comment sets a comment
-func (pb *ProgressBar) Comment(text string, align ...Align) {
+func (pb *ProgressBar) Comment(text string) *Format {
 	pb.comment.text = text
-	if len(align) > 0 {
-		pb.comment.align = align[0]
-	}
+	return pb.comment.Format
 }
 
 // Add adds a percentage
@@ -152,7 +152,7 @@ func (pb *ProgressBar) clean() bool {
 func (pb *ProgressBar) print() {
 	// :: print title
 	if pb.title.text != "" {
-		_, _ = pb.writer.Write([]byte(fmt.Sprintf("%s%s%s%s\n", styleModeBold, styleColorGreen, pb.title, styleReset)))
+		_, _ = pb.writer.Write([]byte(fmt.Sprintf("%s%s\n", pb.title, styleReset)))
 	}
 
 	// :: print progress bar
@@ -160,7 +160,7 @@ func (pb *ProgressBar) print() {
 
 	// :: print comment
 	if pb.comment.text != "" {
-		_, _ = pb.writer.Write([]byte(fmt.Sprintf("\n%s\n", pb.comment)))
+		_, _ = pb.writer.Write([]byte(fmt.Sprintf("\n%s%s\n", pb.comment, styleReset)))
 	}
 }
 

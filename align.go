@@ -1,11 +1,11 @@
 package progress_bar
 
 // Align align type
-type Align int
+type align int
 
 // Align constants
 const (
-	AlignLeft Align = iota
-	AlignCenter
-	AlignRight
+	alignLeft align = iota
+	alignCenter
+	alignRight
 )

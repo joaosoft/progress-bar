@@ -6,11 +6,35 @@ import (
 	"unicode/utf8"
 )
 
-// Format
 type format struct {
-	text  string
-	align Align
-	pb    *ProgressBar
+	*Format
+	pb *ProgressBar
+}
+
+type Format struct {
+	text      string
+	styleList StyleList
+	align     align
+}
+
+func (f *Format) Left() *Format {
+	f.align = alignLeft
+	return f
+}
+
+func (f *Format) Center() *Format {
+	f.align = alignCenter
+	return f
+}
+
+func (f *Format) Right() *Format {
+	f.align = alignRight
+	return f
+}
+
+func (f *Format) Style(style ...Style) *Format {
+	f.styleList = append(f.styleList, style...)
+	return f
 }
 
 // String print a format
@@ -18,12 +42,12 @@ func (f *format) String() string {
 	var alignSpace float32
 
 	switch f.align {
-	case AlignLeft:
-	case AlignCenter:
+	case alignLeft:
+	case alignCenter:
 		alignSpace = ((f.pb.weight.max / 2) + float32(progressBarLeftSpace)) - ((float32(utf8.RuneCountInString(f.pb.title.text)) * f.pb.weight.unit) / 2)
-	case AlignRight:
+	case alignRight:
 		alignSpace = (f.pb.weight.max + float32(progressBarLeftSpace)) - float32(utf8.RuneCountInString(f.pb.title.text))*f.pb.weight.unit
 	}
 
-	return fmt.Sprintf("%s%s", strings.Repeat(" ", int(alignSpace)), f.text)
+	return fmt.Sprintf("%s%s%s", strings.Repeat(" ", int(alignSpace)), f.styleList, f.text)
 }

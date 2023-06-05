@@ -6,15 +6,15 @@ import (
 
 func main() {
 	progressBar := pb.New()
-	progressBar.Title("Installation")
+	progressBar.Title("Installation").Style(pb.StyleBold, pb.StyleBgHiBlue)
 
-	progressBar.Comment("text 1", pb.AlignRight)
+	progressBar.Comment("text 1").Right().Style(pb.StyleFgHiWhite)
 	progressBar.Add(20)
 
-	progressBar.Comment("text 2", pb.AlignCenter)
+	progressBar.Comment("text 2").Center()
 	progressBar.Add(20)
 
-	progressBar.Comment("text 3", pb.AlignLeft)
+	progressBar.Comment("text 3").Left()
 	progressBar.Add(20)
 
 	progressBar.Comment("text 4")
