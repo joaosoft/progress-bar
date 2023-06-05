@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"sync"
 	"time"
 	"unicode/utf8"
 )
@@ -14,6 +15,7 @@ type ProgressBar struct {
 	writer io.Writer
 	weight weight
 	delay  time.Duration
+	mux    *sync.Mutex
 
 	progress     float32
 	progressText string
@@ -48,6 +50,7 @@ var (
 // New creates a new progress bar
 func New(options ...Option) *ProgressBar {
 	progressBar := &ProgressBar{
+		mux:      &sync.Mutex{},
 		symbol:   '█',
 		writer:   os.Stdout,
 		progress: 0,
@@ -91,6 +94,9 @@ func (pb *ProgressBar) Comment(text string, align ...Align) {
 
 // Add adds a percentage
 func (pb *ProgressBar) Add(value int) bool {
+	pb.mux.Lock()
+	defer pb.mux.Unlock()
+
 	if value == 0 {
 		return true
 	}
