@@ -48,6 +48,8 @@ func main() {
 
 	progressBar.Comment("text 4")
 	progressBar.Add(20)
+	progressBar.Add(-20)
+	progressBar.Add(20)
 
 	progressBar.Comment("text 5")
 	progressBar.Add(20)

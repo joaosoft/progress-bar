@@ -106,24 +106,28 @@ func (pb *ProgressBar) Add(value int) bool {
 
 	switch calcValue > 0 {
 	case true:
-		if pb.progress < pb.weight.max {
-			if calcValue > pb.weight.max {
-				pb.progress = pb.weight.max
-				pb.progressText += strings.Repeat(string(pb.symbol), int(pb.weight.max-pb.progress))
-			} else {
-				pb.progress += calcValue
-				pb.progressText += strings.Repeat(string(pb.symbol), int(calcValue))
-			}
+		if pb.progress >= pb.weight.max {
+			return false
+		}
+
+		if (pb.progress + calcValue) > pb.weight.max {
+			pb.progress = pb.weight.max
+			pb.progressText += strings.Repeat(string(pb.symbol), int(pb.weight.max-pb.progress))
+		} else {
+			pb.progress += calcValue
+			pb.progressText += strings.Repeat(string(pb.symbol), int(calcValue))
 		}
 	case false:
-		if pb.progress > pb.weight.min {
-			if calcValue < pb.weight.min {
-				pb.progress = pb.weight.min
-				pb.progressText = ""
-			} else {
-				pb.progress = pb.progress - calcValue
-				pb.progressText = pb.progressText[:utf8.RuneCountInString(pb.progressText)-int(calcValue)]
-			}
+		if pb.progress <= pb.weight.min {
+			return false
+		}
+
+		if (pb.progress - calcValue) < pb.weight.min {
+			pb.progress = pb.weight.min
+			pb.progressText = ""
+		} else {
+			pb.progress = pb.progress + calcValue
+			pb.progressText = string([]rune(pb.progressText)[:int(pb.progress)])
 		}
 	}
 
