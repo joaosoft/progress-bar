@@ -2,10 +2,11 @@ package main
 
 import (
 	pb "github.com/joaosoft/progress-bar"
+	"time"
 )
 
 func main() {
-	progressBar := pb.New()
+	progressBar := pb.New(pb.WithDelay(time.Millisecond * 500))
 	progressBar.Title("Installation").Style(pb.StyleBold, pb.StyleBgHiBlue)
 
 	progressBar.Comment("text 1").Right().Style(pb.StyleFgHiWhite)
