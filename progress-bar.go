@@ -39,7 +39,7 @@ const (
 // Progress bar corners
 const (
 	progressBarLeftText  = "[ "
-	progressBarRightText = "]"
+	progressBarRightText = " ]"
 )
 
 // Progress bar Corners size
@@ -160,7 +160,7 @@ func (pb *ProgressBar) print() {
 	}
 
 	// :: print progress bar
-	_, _ = pb.writer.Write([]byte(fmt.Sprintf("%s%s %s%s", progressBarLeftText, pb.progressText, strings.Repeat(" ", int(pb.weight.max-pb.progress)), progressBarRightText)))
+	_, _ = pb.writer.Write([]byte(fmt.Sprintf("%s%s%s%s", progressBarLeftText, pb.progressText, strings.Repeat(" ", int(pb.weight.max-pb.progress)), progressBarRightText)))
 
 	// :: print comment
 	if pb.comment.text != "" {

@@ -35,13 +35,17 @@ import (
 
 func main() {
 	progressBar := pb.New(pb.WithDelay(time.Millisecond * 500))
-	progressBar.Title("Installation").Style(pb.StyleBold, pb.StyleBgHiBlue)
+	progressBar.Title("Installation").Right().Style(pb.StyleBold, pb.StyleBgHiBlue)
 
 	progressBar.Comment("text 1").Right().Style(pb.StyleFgHiWhite)
 	progressBar.Add(20)
 
+	progressBar.Title("Installation").Center()
+
 	progressBar.Comment("text 2").Center()
 	progressBar.Add(20)
+
+	progressBar.Title("Installation").Left()
 
 	progressBar.Comment("text 3").Left()
 	progressBar.Add(20)
@@ -58,7 +62,7 @@ func main() {
 
 > ##### Result:
 ```
-                                               Installation
+Installation
 [ ████████████████████████████████████████████████████████████████████████████████████████████████████ ]
 text 5
 ```
